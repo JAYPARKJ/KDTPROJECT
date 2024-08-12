@@ -1,0 +1,40 @@
+package com.javateam.memberProject.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.javateam.memberProject.domain.MemberVO;
+import com.javateam.memberProject.service.MemberService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Controller
+// member에 대한거구나, url 주소 파악 
+@RequestMapping("member")
+@Slf4j
+public class MemberJoinController {
+	
+		@Autowired
+		MemberService memberService;
+		
+		//@RequestMapping(value="/member/joinProc", method=RequestMethod.POST)
+		@PostMapping("joinProc")
+		public String joinProc(@RequestBody MemberVO memberVO) 
+		{	log.info("회원가입 처리: {}", memberVO);
+		// boolean이라 참이면 / 거짓이면 ~ 
+			String msg = ""; // 저장성공 /실패 메시지 
+			if(memberService.insertMember(memberVO) == true)
+			{	msg = "회원가입에 성공했습니다.";}
+			else 
+			{
+				msg = "회원가입에 실패하였습니다.";
+			}
+    		return "result";
+		}
+		
+		
+}

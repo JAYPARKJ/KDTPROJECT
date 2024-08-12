@@ -1,0 +1,29 @@
+package com.javateam.memberProject.service;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.javateam.memberProject.domain.MemberVO; 
+
+import lombok.extern.slf4j.Slf4j;
+@SpringBootTest
+@Slf4j
+class UpdateMemberTest {
+	@Autowired
+	MemberService memberService;
+	MemberVO memberVO;
+	// case-1) 패쓰워드만 변경(수정)
+	@Test
+	void testUpdateMember() {
+	
+		 memberVO = MemberVO.builder()
+				 			.pw("Abcd1234")
+				 			.build();
+				 			
+		
+	}
+
+}

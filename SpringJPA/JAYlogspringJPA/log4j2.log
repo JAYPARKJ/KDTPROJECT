@@ -1,0 +1,84 @@
+INFO : org.apache.juli.logging.DirectJDKLog ==> Stopping ProtocolHandler ["http-nio-8181"] : [2024-07-31 16:00:56.871]
+
+INFO : org.apache.juli.logging.DirectJDKLog ==> Destroying ProtocolHandler ["http-nio-8181"] : [2024-07-31 16:00:56.875]
+
+INFO : org.springframework.orm.jpa.AbstractEntityManagerFactoryBean ==> Closing JPA EntityManagerFactory for persistence unit 'default' : [2024-07-31 16:00:56.876]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 11. Connection.isValid(5) returned true : [2024-07-31 16:00:56.877]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 11. Connection.getAutoCommit() returned true : [2024-07-31 16:00:56.877]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 11. Statement.new Statement returned  : [2024-07-31 16:00:56.877]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 11. Connection.createStatement() returned net.sf.log4jdbc.sql.jdbcapi.StatementSpy@c378af5 : [2024-07-31 16:00:56.877]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> drop table demo_tbl cascade constraints
+ : [2024-07-31 16:00:56.878]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> drop table demo_tbl cascade constraints
+ {executed in 10 msec} : [2024-07-31 16:00:56.888]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 11. Statement.execute(
+    drop table demo_tbl cascade constraints) returned false : [2024-07-31 16:00:56.889]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 11. Statement.getWarnings() returned null : [2024-07-31 16:00:56.889]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> drop sequence user_seq
+ : [2024-07-31 16:00:56.889]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> drop sequence user_seq
+ {executed in 2 msec} : [2024-07-31 16:00:56.891]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 11. Statement.execute(
+    drop sequence user_seq) returned false : [2024-07-31 16:00:56.891]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 11. Statement.getWarnings() returned null : [2024-07-31 16:00:56.891]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 11. Statement.close() returned  : [2024-07-31 16:00:56.891]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 11. Connection.clearWarnings() returned  : [2024-07-31 16:00:56.891]
+
+INFO : com.zaxxer.hikari.HikariDataSource ==> HikariPool-2 - Shutdown initiated... : [2024-07-31 16:00:56.892]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 11. Connection closed : [2024-07-31 16:00:56.893]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 11. Connection.close() returned  : [2024-07-31 16:00:56.893]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 12. Connection closed : [2024-07-31 16:00:56.894]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 12. Connection.close() returned  : [2024-07-31 16:00:56.894]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 13. Connection closed : [2024-07-31 16:00:56.894]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 13. Connection.close() returned  : [2024-07-31 16:00:56.894]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 14. Connection closed : [2024-07-31 16:00:56.895]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 14. Connection.close() returned  : [2024-07-31 16:00:56.895]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 15. Connection closed : [2024-07-31 16:00:56.896]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 15. Connection.close() returned  : [2024-07-31 16:00:56.896]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 16. Connection closed : [2024-07-31 16:00:56.897]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 16. Connection.close() returned  : [2024-07-31 16:00:56.897]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 17. Connection closed : [2024-07-31 16:00:56.898]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 17. Connection.close() returned  : [2024-07-31 16:00:56.898]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 18. Connection closed : [2024-07-31 16:00:56.899]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 18. Connection.close() returned  : [2024-07-31 16:00:56.899]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 19. Connection closed : [2024-07-31 16:00:56.899]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 19. Connection.close() returned  : [2024-07-31 16:00:56.899]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 20. Connection closed : [2024-07-31 16:00:56.900]
+
+INFO : net.sf.log4jdbc.log.slf4j.Slf4jSpyLogDelegator ==> 20. Connection.close() returned  : [2024-07-31 16:00:56.900]
+
+INFO : com.zaxxer.hikari.HikariDataSource ==> HikariPool-2 - Shutdown completed. : [2024-07-31 16:00:56.900]
+

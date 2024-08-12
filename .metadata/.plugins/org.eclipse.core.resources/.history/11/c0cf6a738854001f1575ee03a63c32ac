@@ -1,0 +1,19 @@
+package com.javateam.memberProject.repository;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+class DeleteMemberTest {
+
+	@Autowired
+	 MemberDAO memberDAO;
+	
+	// case-1) 회원()의 롤(들) 삭제 점검
+	@Test
+	void testDeleteRoles() {
+	}
+
+ 
+}

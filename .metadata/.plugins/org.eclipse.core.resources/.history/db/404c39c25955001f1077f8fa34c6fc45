@@ -1,0 +1,5 @@
+package com.javateam.memberProject.controller;
+
+public class MemberJoinController {
+
+}

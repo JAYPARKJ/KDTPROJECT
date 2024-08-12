@@ -1,0 +1,14 @@
+package com.javateam.memberProject.repository;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class DeleteMemberTest {
+
+	@Test
+	void testDeleteRoles() {
+		fail("Not yet implemented");
+	}
+
+}

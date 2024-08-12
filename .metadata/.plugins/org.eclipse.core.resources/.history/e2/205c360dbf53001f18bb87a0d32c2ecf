@@ -1,0 +1,213 @@
+package com.javateam.memberProject.service;
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import com.javateam.memberProject.domain.MemberVO;
+import com.javateam.memberProject.repository.MemberDAO;
+
+
+import lombok.extern.slf4j.Slf4j;
+
+
+@Service
+@Slf4j
+public class MemberServiceImpl implements MemberService {
+	
+	@Autowired
+	private TransactionTemplate txTemplate;
+	// howto-1)
+	@Autowired
+	// DataSourceTransactionManager dsTxManager; 
+	PlatformTransactionManager dsTxManager;
+	
+	// howto-2)
+//	private final PlatformTransactionManager dsTxManager;
+//	
+//	public MemberServiceImpl(PlatformTransactionManager dsTxManager) {
+//		this.dsTxManager = dsTxManager;
+//	}
+	
+	// 1번 selectMemberById()
+	@Autowired
+	MemberDAO memberDAO;
+
+
+	@Transactional(readOnly = true)
+	@Override
+	public MemberVO selectMemberById(String id) {
+		
+		return memberDAO.selectMemberById(id);
+	}
+
+	// 2번 selectMembersByPaging()
+	@Transactional(readOnly = true)
+	@Override
+	public List<MemberVO> selectMembersByPaging(int page, int limit) {
+		
+		return memberDAO.selectMembersByPaging(page, limit);
+	}
+
+	// 3번 selectAllMembers()
+	@Transactional(readOnly = true)
+	@Override
+	public List<MemberVO> selectAllMembers() {
+		
+		return memberDAO.selectAllMembers();
+	}
+	
+	// 4번 
+	@Override
+	public boolean insertMember(MemberVO memberVO) {
+
+		return txTemplate.execute(status -> {
+				boolean result = false;
+				// insertMember => 리턴값이 있음(boolean이냐 아니냐)
+				// 회원정보 생성
+				try {
+					result = memberDAO.insertMember(memberVO);
+					// result = memberDAO.insertRole(memberVO.getId(), "ROLE_USER");
+				} catch (Exception e) {
+					result = false;
+					log.error("MemberService.insertMember 에러 : " + e);
+					status.setRollbackOnly();
+				}
+				
+				// 회원 롤(Role) 생성
+				try {
+					result = memberDAO.insertRole(memberVO.getId(), "ROLE_USER");
+				} catch (Exception e) {
+					result = false;
+					log.error("MemberService.insertMember(Role) 에러 : " + e);
+					status.setRollbackOnly();
+				}
+				return result;
+			}
+		);
+	}
+	/*
+	@Override
+	public boolean insertMember(MemberVO memberVO) {
+
+
+		return txTemplate.execute(new TransactionCallback<Boolean>() {
+
+
+			@Override
+			public Boolean doInTransaction(TransactionStatus status) {
+
+
+				boolean result = false;
+				
+				try {
+					result = memberDAO.insertMember(memberVO);
+				} catch (Exception e) {
+					result = false;
+					log.error("MemberService.insertMember 에러 : " + e);
+					status.setRollbackOnly();
+				}
+				return result;
+			}
+			
+		});
+	}
+	*/
+	/*
+	@Override
+	public boolean insertMember(MemberVO memberVO) {
+		
+		boolean result = false;
+		TransactionStatus txStatus
+			= dsTxManager.getTransaction(new DefaultTransactionDefinition());
+		
+		try {
+			result = memberDAO.insertMember(memberVO);		
+			result = memberDAO.insertRole(memberVO.getId(), "ROLE_USER");	
+			dsTxManager.commit(txStatus);
+			// result = true;
+			
+		} catch (Exception e) {
+			
+			dsTxManager.rollback(txStatus);
+			result = false;
+			log.error("MemberService.insertMember 에러 : " + e);
+			// throw e;
+		}
+		
+		// dsTxManager.commit(txStatus);
+		 * return 이 있어서 execute함, 자바스크립트식으로 Callback함수와 같음, 함수 익명인터페이스형태로 람다로 쉽게 치환 
+		 
+		return result;
+	} 
+	*/
+		 
+	  
+
+  @Override
+  public MemberVO insertMember2(MemberVO memberVO)
+  {
+	   return txTemplate.execute(new TransactionCallback<MemberVO>()
+			   {
+			@Override
+			public MemberVO doInTransaction(TransactionStatus status) {
+				//boolean result = false;
+			  	MemberVO resultVO = null;
+
+			  try { 
+				  if(memberDAO.insertMember(memberVO) == true &&
+			  		 memberDAO.insertRole(memberVO.getId(), "ROLE_USER") ==true)
+			  		 {
+		   				// 회원 정보 생성 이후 결과
+		   				resultVO = memberDAO.selectMemberById(memberVO.getId());
+			  		 }
+				  }
+			  catch(Exception e){
+				  resultVO = null;
+				  log.error("MemberService.insertMember 에러 :" + e );
+				  status.setRollbackOnly();
+			  }
+			  	return resultVO;
+		 
+			   }
+
+			   });
+  }
+// 가끔 final 걸어주는 이유는 memberVO 변경안시키겠다.
+@Override
+public boolean updateMember(MemberVO memberVO) 
+	{
+
+	// 익명클래스로 씀, without(은 void값으로 들어감), return 있을 경우 callback으로함 
+	// 빨간줄이 있는경우 구현해야할 추상메서드가 있기 때문
+	return txTemplate.execute(new TransactionCallback<Boolean>()
+	{
+		@Override
+		public Boolean doInTransaction(TransactionStatus status) {
+		boolean result = false;
+		// 관리자가 업데이트, 롤을 업데이트 하게되면 별도로 호출 
+		try 
+		{	
+			result = memberDAO.updateMember(memberVO);
+		}
+		catch (Exception e)
+		{	result = false;
+			log.error("MemberService.updateMember 오류 : " + e);
+			status.setRollbackOnly();
+		}
+	    return result;
+		}
+	});
+	}
+}

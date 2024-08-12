@@ -1,0 +1,13 @@
+package Algorithm1;
+
+public class CountOccurences {
+
+	public static void main(String[] args) {
+
+		 int[] numbers = {1, 2, 3, 4, 5, 3, 4, 2, 9, 5, 7, 2, 3, 6, 7, 8};
+	     int target = 3;
+		
+		
+	}
+
+}

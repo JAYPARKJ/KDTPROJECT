@@ -1,0 +1,24 @@
+package com.javateam.memberProject.service;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import lombok.extern.slf4j.Slf4j;
+
+@SpringBootTest
+@Slf4j
+class DeleteMemberTest {
+	
+	@Autowired
+	MemberService memberSerivce;
+	@Test
+	void testDeleteMember() {
+	
+	
+	}
+	
+
+}

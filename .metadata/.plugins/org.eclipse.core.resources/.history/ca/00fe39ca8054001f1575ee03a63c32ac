@@ -1,0 +1,17 @@
+package Algorithm1;
+
+public class CountOccurences {
+
+	public static void main(String[] args) {
+
+		 int[] numbers = {1, 2, 3, 4, 5, 3, 4, 2, 9, 5, 7, 2, 3, 6, 7, 8};
+	     // 정수 배열과 찾고자 하는 숫자 정의
+		 int target = 3;
+		
+		 // 특정 숫자 개수를 세기 위한 변수 
+	     int count = 3;
+	     
+		
+	}
+
+}

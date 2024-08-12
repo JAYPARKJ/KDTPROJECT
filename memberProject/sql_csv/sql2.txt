@@ -1,0 +1,12 @@
+UPDATE 
+		MEMBER_TBL 
+	SET PW = #{pw}
+	 ,  EMAIL = #{email}
+	 ,  MOBILE = #{mobile}
+	 ,  PHONE =  #{phone}
+	 ,  ZIP =  #{zip}
+	 ,  ROAD_ADDRESS = #{roadAddress}
+	 ,  JIBUN_ADDRESS = #{jibunAddress}
+	 ,  DETAIL_ADDRESS = #{detailAddress} 
+WHERE  ID = #{id}
+;

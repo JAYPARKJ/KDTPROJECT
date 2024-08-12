@@ -1,0 +1,598 @@
+/*
+ * package com.javateam.memberProject.controller;
+ * 
+ * import static
+ * org.assertj.core.api.Assertions.setExtractBareNamePropertyMethods; import
+ * static org.junit.jupiter.api.Assertions.*; import static
+ * org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*; import
+ * static
+ * org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+ * import static
+ * org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+ * import static
+ * org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+ * 
+ * import java.sql.Date;
+ * 
+ * import org.junit.jupiter.api.AfterEach; import
+ * org.junit.jupiter.api.BeforeEach; import org.junit.jupiter.api.Test; import
+ * org.springframework.beans.factory.annotation.Autowired; import
+ * org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+ * import org.springframework.boot.test.context.SpringBootTest; import
+ * org.springframework.http.MediaType; import
+ * org.springframework.test.web.servlet.MockMvc; import
+ * org.springframework.test.web.servlet.setup.MockMvcBuilders; import
+ * org.springframework.web.context.WebApplicationContext;
+ * 
+ * import com.fasterxml.jackson.databind.ObjectMapper; import
+ * com.javateam.memberProject.domain.MemberVO; import
+ * com.javateam.memberProject.service.MemberService;
+ * 
+ * import lombok.extern.slf4j.Slf4j;
+ * 
+ * @SpringBootTest
+ * 
+ * @AutoConfigureMockMvc // 꼭 써야 되는건 아니지만 목객체 생성해야함
+ * 
+ * @Slf4j class MemberJoinControllerTest {
+ * 
+ * // context 객체 (wac)
+ * 
+ * @Autowired WebApplicationContext wac;
+ * 
+ * // 목(mock) 객체
+ * 
+ * @Autowired MockMvc mockMvc;
+ * 
+ * // 서비스 객체 ex) @AfterEach : 회원정보 삭제
+ * 
+ * @Autowired MemberService memberService;
+ * 
+ * // VO MemberVO memberVO;
+ * 
+ * // 목(mock) 객체 생성, 회원정보 준비
+ * 
+ * @BeforeEach void setUp() throws Exception { this.mockMvc =
+ * MockMvcBuilders.webAppContextSetup(ctx).builder();
+ * 
+ * memberVO = MemberVO.builder() .id("springjava1111") .pw("#Abcd1234")
+ * .name("홍길동") .gender("m") .email("springjava1111@abcd.com")
+ * .mobile("010-8989-7878") .phone("02-1111-2222") .zip("08290")
+ * .roadAddress("서울특별시 관악구 신림로 340")
+ * .jibunAddress("서울특별시 관악구 신림동 1422-5 르네상스 복합쇼핑몰")
+ * .detailAddress("6층 MBC 아카데미") .birthday(Date.valueOf("2000-01-01"))
+ * .joindate(Date.valueOf("2024-08-05")) .build(); }
+ * 
+ * @AfterEach void tearDown() throws Exception {
+ * memberService.deleteMember("springjava1111"); }
+ * 
+ * // case-1) URL/Http 메소드 => 인자(준비된 회원정보) => JSON화(일괄처리) // => 연결여부(Http 상태 코드
+ * : 200) //=> 성공여부(메시징) 점검 => 이동될 html(tyhmeleaf)점검
+ * 
+ * @Test void testJoinProc() throws Exception { ObjectMapper om = new
+ * ObjectMapper(); String json = om.writeValueAsString(om);
+ * 
+ * try { mockMvc.perform(post("/member/joinProc")
+ * .contentType(MediaType.APPLICATION_JSON) .content(json)
+ * .accept(MediaType.APPLICATION_JSON)) .andExpect(status().isOk())
+ * .andExpect(model().attribute("msg", "회원가입에 성공하셨습니다"))
+ * .andExpect(view().name("/member/result"));
+ * 
+ * }catch (Exception e) {
+ * 
+ * System.err.println(""); }
+ * 
+ * }
+ * 
+ * private Object Model() { // TODO Auto-generated method stub return null; }
+ * 
+ * }
+ */
+user profile
+커뮤니티
+콘텐츠
+챌린지
+내 활동
+설정
+공지사항
+수업 동영상
+파이썬(python)
+웹 서버 구축
+국영수 총점/평균 문제
+Java (JSE)
+Oracle (DB)
+HTML_CSS_JS
+학생 공유 학습방
+개발자 핵심 정보
+질문방
+이벤트
+메인비즈협회
+364개의 글
+고정글
+6
+전체보기
+8/5 ~ 8/9 주간 수업 동영상
+시퀀스(sequence) 부류 자료구조들의 표현 예시들
+참고 교재) 파이썬 200제
+user profile
+이승호 강사
+관리자
+30분 전
+2024년 8월 8일 8교시 수업내용 (웹 서버 구축) : 회원관리 프로그램 - 회원 가입 MVC 테스트
+1.MemberJoinController.java package com.javateam.memberProject.controller; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.stereotype.Controller; import org.springframework.ui.Model; import org.springframework.web.bind.annotation.PostMapping; import org.springframework.web.bind.annotation.RequestBody; import org.springframework.web.bind.annotation.RequestMapping; import org.springframework.web.bind.annotation.RequestMethod; import com.javateam.memberProject.domain.MemberVO; import com.javateam.memberProject.service.MemberService; import lombok.extern.slf4j.Slf4j; @Controller @RequestMapping("member") @Slf4j public class MemberJoinController { @Autowired MemberService memberService; // @RequestMapping(value="/member/joinProc",  // method=RequestMethod.POST) // @PostMapping("/member/joinProc") @PostMapping("joinProc") public String joinProc(@RequestBody MemberVO memberVO, Model model) { log.info("회원가입 처리 : {}", memberVO); String msg = ""; // 저장 성공/실패 메시지 if (memberService.insertMember(memberVO) == true) { msg = "회원가입에 성공하셨습니다."; } else { msg = "회원가입에 실패하였습니다."; } model.addAttribute("msg", msg); return "/member/result"; // result.html (thymeleaf) } }
+No.382
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+17:07 (수정됨)
+2024년 8월 8일 7교시 수업내용 (웹 서버 구축) : 회원관리 프로그램 - 회원 가입 MVC 테스트
+1.MemberServiceImpl.java ...(전략)... @Override public boolean insertMember(MemberVO memberVO) { return txTemplate.execute(status -> { boolean result = false; // 회원정보 생성 try { log.info("기존 회원 존재여부 : " + memberDAO.hasMemberByFld("ID", memberVO.getId())); // 기존 회원 존재 여부 // if (memberDAO.selectMemberById(memberVO.getId()) != null) { if (memberDAO.hasMemberByFld("ID", memberVO.getId()) == true) { throw new Exception("중복되는 회원정보가 존재합니다."); } log.info("-- memberVO : " + memberVO); result = memberDAO.insertMember(memberVO); // result = memberDAO.insertRole(memberVO.getId(), "ROLE_USER"); } catch (Exception e) { result = false; log.error("MemberService.insertMember 에러 : " + e); status.setRollbackOnly(); } // 회원 롤(Role) 생성 try { // 중요) 버그 패치 // 기존 회원 존재 여부 : 기존회원이 존재해야 롤 추가 가능 ! // if (memberDAO.selectMemberById(memberVO.getId()) == null) { if (memberDAO.hasMemberByFld("ID", memberVO.getId()) == false) { throw new Exception("회원정보가 존재하지 않습니다."); } result = memberDAO.insertRole(memberVO.getId(), "ROLE_USER"); } catch (Exception e) { result = false; log.error("MemberService.insertMember(Role) 에러 : " + e); status.setRollbackOnly(); } return result; } ); } ...(후략)...
+No.381
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/07 (수정됨)
+2024년 8월 7일 : 국영수 총점/평균 문제-14 : DAO(학생 성적정보 레코드 생성) 활용
+1.DAO.java package dao; import java.sql.Connection; import java.sql.PreparedStatement; import java.sql.SQLException; import util.DbUtil; import work.Student; public class DAO { public boolean insertStudent(Student student) { boolean result = false; // 성공 여부 결과 Connection con = DbUtil.connect(); // DB 연결 // SQL String sql = "INSERT INTO " + "      STUDENT_TBL " + "      VALUES " + "      ( " + "          ? " + "        , ? " + "        , ? " + "        , ? " + "        , ? " + "        , ? " + "        , ? " + "    )"; PreparedStatement pstmt = null; // DB 해석(처리) 객체 try { con.setAutoCommit(false); // 트랜잭션 수동 제어 pstmt = con.prepareStatement(sql); pstmt.setString(1, student.getName()); pstmt.setInt(2, student.getKor()); pstmt.setInt(3, student.getEng()); pstmt.setInt(4, student.getMath()); pstmt.setInt(5, student.getTot()); pstmt.setFloat(6, student.getAvg()); pstmt.setInt(7,  student.getRank()); if (pstmt.executeUpdate() == 1) { System.out.println(student.getName()  + " 학생의 성적정보 저장에 성공하였습니다."); result = true; con.commit(); // 커밋 } else { //System.out.println(student.getName()  // + " 학생의 성적 정보 저장에 실패하였습니다."); throw new SQLException(student.getName()  + " 학생의 성적정보 저장에 실패하였습니다."); } } catch (SQLException e) { result = false; try { con.rollback(); } catch (SQLException e1) { e1.printStackTrace(); } System.err.println("insertStudent 에러 : " + e); } finally { DbUtil.close(pstmt, null, con); // 자원 반납 } return result; } public boolean updateStudent(Student student) { boolean result = false; // 성공 여부 결과 Connection con = DbUtil.connect(); // DB 연결 // SQL String sql = "UPDATE " + "      STUDENT_TBL " + "  SET KOR = ? " + "    , ENG = ? " + "    , MATH = ? " + "    , TOT = ? " + "    , AVG = ? " + "    , RANK = ? " + "WHERE NAME = ?"; PreparedStatement pstmt = null; // DB 해석(처리) 객체 try { con.setAutoCommit(false); // 트랜잭션 수동 제어 pstmt = con.prepareStatement(sql); pstmt.setInt(1, student.getKor()); pstmt.setInt(2, student.getEng()); pstmt.setInt(3, student.getMath()); pstmt.setInt(4, student.getTot()); pstmt.setFloat(5, student.getAvg()); pstmt.setInt(6,  student.getRank()); pstmt.setString(7, student.getName()); if (pstmt.executeUpdate() == 1) { System.out.println(student.getName()  + " 학생의 성적정보 수정에 성공하였습니다."); result = true; con.commit(); // 커밋 } else { throw new SQLException(student.getName()  + " 학생의 성적정보 수정에 실패하였습니다."); } } catch (SQLException e) { result = false; try { con.rollback(); } catch (SQLException e1) { e1.printStackTrace(); } System.err.println("updateStudent 에러 : " + e); } finally { DbUtil.close(pstmt, null, con); // 자원 반납 } return result; } }
+No.380
+국영수 총점/평균 문제
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/07 (수정됨)
+2024년 8월 7일 7교시 수업내용 (웹 서버 구축) : Spring & MyBatis 트랜잭션(Transaction) - 회원정보 삭제
+1.MemberService.java ...(전략)... /** * 개별 회원정보 삭제       * : 회원 롤(role)/회원정보 동시 삭제 *  * @param id 회원 아이디 * @return 회원정보 삭제 성공 여부  */ boolean deleteMember(String id); } 2.MemberServiceImpl.java ...(전략)... @Override public boolean deleteMember(String id) { return txTemplate.execute(new TransactionCallback<Boolean>() { @Override public Boolean doInTransaction(TransactionStatus status) { boolean result = false; try { // 기존 회원 존재 여부 // if (memberDAO.selectMemberById(id) == null) { if (memberDAO.hasMemberByFld("ID", id) == false) { throw new Exception("삭제할 회원정보가 존재하지 않습니다."); } if (memberDAO.deleteRoles(id) == true &&     memberDAO.deleteMemberById(id) == true) { result = true; }  } catch (Exception e) { result = false; log.error("MemberService.deleteMember 오류 : " + e); status.setRollbackOnly(); } return result; } }); } }
+No.379
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/07 (수정됨)
+2024년 8월 7일 6교시 수업내용 (웹 서버 구축) : Spring & MyBatis 트랜잭션(Transaction) - 회원정보 삭제
+1.member_dml7.sql -- 아래와 같이 다수의 회원 롤을 구성하기 위해  -- 관리자(ROLE_ADMIN) 롤을 의도적으로 추가할 수 있습니다. INSERT INTO     USER_ROLES     VALUES     (      USER_ROLES_SEQ.NEXTVAL       , 'abcd1111'       , 'ROLE_ADMIN'      );      -- 다수의 롤(role) 생성 조회     SELECT *    FROM USER_ROLES   WHERE USERNAME = 'abcd1111';     -- 회원 롤(들) 삭제 DELETE    FROM USER_ROLES   WHERE USERNAME = 'abcd1111';  -- 회원정보 삭제 DELETE    FROM MEMBER_TBL  WHERE ID = 'abcd1111';    
+No.378
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/07
+2024년 8월 7일 4교시 수업내용 (파이썬 기본) : 파이썬 기초 문법
+arr = [] print(type(arr)) # <class 'list'> arr = list() print(type(arr)) # <class 'list'> #arr[0] = 1 # (X) arr.append(10) # 요소 추가 arr[0] = 1 # 요소 변경 arr.append(20) # 요소 추가 print(arr) # arr = [1, 2, 3] # arr[0] = 10 # print(arr[0]) # 10 print("-" * 20) #print(list(range(10))) #print(tuple(range(10))) a = list(range(10)) # print('a[0]:', a[0]) for e in a: print(e, end=" ") print() for i in range(10): print(a[i], end=" ")
+No.377
+파이썬(python)
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/07 (수정됨)
+인터프리터 사용시 정수 범위 문제(-5~256) 및 is 연산자 사용시 주의 사항
+주의) shell 모드(CLI)에서는 값이 256을 초과하거나 -5 미만인 경우면 결과가 다르다. : 파이썬은 처음 인터프리터를 시작할 때 –5~256까지 변하지 않는 메모리(정적 메모리) 주소에 값을 할당한다. 그리고 해당 값을 다른 변수가 사용할 때, 그 메모리 주소를 반환한다.​>>> a = 256 >>> b = 256 >>> a is b True​>>> c = 257 >>> d = 257 >>> c is d False​>>> a = -5 >>> b = -5 >>> a is b True​>>> a = -6 >>> b = -6 >>> a is b False​- 참고) 관련 근거​: https://docs.python.org/2/c-api/int.html​
+image
+No.376
+파이썬(python)
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/07
+시퀀스(sequence) 부류 자료구조들의 표현 예시들
+a[start:stop] # start ~ stop-1 a[start:] # start ~ 끝 a[:stop] # 처음 ~ stop-1 a[:] # 전체​a[start:stop:step] # start ~ stop-1 까지 step 만큼 증감 a[-1] # 끝 요소 a[-2:] # 끝 요소를 -1 이라고 순서로 간주하였을 때 끝에서 두번째 요소 a[:-2] # 끝에서 2개를 뺀 나머지 요소들​a[::-1] # 역순으로 모든 요소 출력 a[1::-1] # 처음(0)부터 2번째 요소(index = 1)을 검색하여 역순으로 출력 a[:-3:-1] # 끝 두 요소(-1 ~ -3 까지에서 하나뺌 → 2개 검색) 검색하여 역순 출력 a[-3::-1] # 끝 요소를 -1 이라고 순서로 간주하였을 때 끝 두 요소들을 제외한 모든 요소 검색하여 역순 출력 참고) https://docs.python.org/ko/3.11/library/stdtypes.html#common-sequence-operations https://docs.python.org/ko/3.11/library/stdtypes.html#mutable-sequence-types
+고정
+No.375
+파이썬(python)
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/07 (수정됨)
+2024년 8월 7일 3교시 수업내용 (파이썬 기본) : 파이썬 기초 문법
+print(bool(1)) # True print(bool(2)) # True print(bool(-2)) # True print(bool(0)) # False print(bool()) # False (내용 없음(False)) print(bool('False')) # True (문자열 내용 있음(True)) print(bool('')) # False (문자열 내용 없음(False)) print(bool(' ')) # True (문자열 내용 있음(True))
+No.374
+파이썬(python)
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/07
+2024년 8월 7일 2교시 수업내용 (파이썬 기본) : 파이썬 기초 문법
+''' a = int(input("입력 1 :")) b = int(input("입력 2 :")) print(a + b) ''' ################# ''' # split : https://docs.python.org/ko/3.11/library/stdtypes.html#str.split x, y = "python java".split() # x, y = "python", "java" print("x :", x) print("y :", y) ''' ############################# print() print(1) print(1, 2) print(1, 2, sep=",", end=" ") print(10, 20)
+No.373
+파이썬(python)
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/07
+2024년 8월 7일 1교시 수업내용 (파이썬 기본) : 파이썬 기초 문법
+a = 1 a = 'abcd' a = "I'm \"Python\" !" a = "abcd \ Java \ Python" print(a) print(type(a)) ''' 문단 주석 ''' """ 문단 주석2 """ x, y, z = 10, 20, 30 x = y = z = 10 print(x, y, z) x, y = 10, 20 x, y = y, x # 변수값이 치환 print(x, y) print("-" * 10) del x # x # x = 1 x = None # Java/JS => null에 해당 print(type(x)) # <class 'NoneType'> print(x) print("-" * 10) d = 1 d += 10 # d = d + 10 print(d) ################### x = input('입력 : ') # 표준(콘솔) 입력 print("x :", x)
+No.372
+파이썬(python)
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/06 (수정됨)
+2024년 8월 6일 : 국영수 총점/평균 문제-13 : DML(SQL) & DAO(학생 성적정보 작성) 작성
+1.DDL_DML.sql CREATE TABLE STUDENT_TBL ( NAME VARCHAR2(50) PRIMARY KEY, KOR NUMBER(3) DEFAULT 0 NOT NULL, ENG NUMBER(3) DEFAULT 0 NOT NULL, MATH NUMBER(3) DEFAULT 0 NOT NULL, TOT NUMBER(3) DEFAULT 0, AVG NUMBER(5, 2) DEFAULT 0, RANK NUMBER(2) ); -- 학생 성적정보 생성 INSERT INTO    STUDENT_TBL        VALUES    (         '안세영'       , 100       , 90       , 95       , 0       , 0       , 0    );     -- 학생 성적정보 삭제     DELETE STUDENT_TBL WHERE NAME = '안세영'; -- 학생 성적정보 조회 SELECT * FROM STUDENT_TBL WHERE NAME = '안세영'; -- 학생 성적정보 수정 UPDATE    STUDENT_TBL    SET KOR = 98      , ENG = 95      , MATH = 80      , TOT = 273      , AVG = 91.0      , RANK = 1  WHERE NAME = '안세영';   
+No.371
+국영수 총점/평균 문제
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/06 (수정됨)
+2024년 8월 6일 7교시 수업내용 (웹 서버 구축) : Spring & MyBatis 트랜잭션(Transaction) - 회원정보 수정
+1.MemberServiceImpl.java ...(전략)... @Override public boolean insertMember(MemberVO memberVO) { return txTemplate.execute(status -> { boolean result = false; // 회원정보 생성 try { // 기존 회원 존재 여부 // if (memberDAO.selectMemberById(memberVO.getId()) != null) { if (memberDAO.hasMemberByFld("ID", memberVO.getId()) == true) { throw new Exception("중복되는 회원정보가 존재합니다."); } result = memberDAO.insertMember(memberVO); // result = memberDAO.insertRole(memberVO.getId(), "ROLE_USER"); } catch (Exception e) { result = false; log.error("MemberService.insertMember 에러 : " + e); status.setRollbackOnly(); } // 회원 롤(Role) 생성 try { // 기존 회원 존재 여부 // if (memberDAO.selectMemberById(memberVO.getId()) != null) { if (memberDAO.hasMemberByFld("ID", memberVO.getId()) == true) { throw new Exception("중복되는 회원정보가 존재합니다."); } result = memberDAO.insertRole(memberVO.getId(), "ROLE_USER"); } catch (Exception e) { result = false; log.error("MemberService.insertMember(Role) 에러 : " + e); status.setRollbackOnly(); } return result; } ); } /* @Override public boolean insertMember(MemberVO memberVO) { boolean result = false; TransactionStatus txStatus = dsTxManager.getTransaction(new DefaultTransactionDefinition()); try { result = memberDAO.insertMember(memberVO); result = memberDAO.insertRole(memberVO.getId(), "ROLE_USER"); dsTxManager.commit(txStatus); // result = true; } catch (Exception e) { dsTxManager.rollback(txStatus); result = false; log.error("MemberService.insertMember 에러 : " + e); // throw e; } // dsTxManager.commit(txStatus); return result; }  */ @Override public MemberVO insertMember2(MemberVO memberVO) { return txTemplate.execute(new TransactionCallback<MemberVO>() { @Override public MemberVO doInTransaction(TransactionStatus status) { MemberVO resultVO = null; try { // 기존 회원 존재 여부 // if (memberDAO.selectMemberById(memberVO.getId()) != null) { if (memberDAO.hasMemberByFld("ID", memberVO.getId()) == true) { throw new Exception("중복되는 회원정보가 존재합니다."); } if (memberDAO.insertMember(memberVO) == true && memberDAO.insertRole(memberVO.getId(), "ROLE_USER") == true) { // 회원정보 생성 이후 결과 resultVO = memberDAO.selectMemberById(memberVO.getId()); } } catch (Exception e) { resultVO = null; log.error("MemberService.insertMember 에러 : " + e); status.setRollbackOnly(); } return resultVO; } }); } @Override public boolean updateMember(MemberVO memberVO) { return txTemplate.execute(new TransactionCallback<Boolean>() { @Override public Boolean doInTransaction(TransactionStatus status) { boolean result = false; try { // 기존 회원 존재 여부 // if (memberDAO.selectMemberById(memberVO.getId()) == null) { if (memberDAO.hasMemberByFld("ID", memberVO.getId()) == false) { throw new Exception("수정할 회원정보가 존재하지 않습니다."); } result = memberDAO.updateMember(memberVO); } catch (Exception e) { result = false; log.error("MemberService.updateMember 오류 : " + e); status.setRollbackOnly(); } return result; } }); } }
+No.370
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/06
+2024년 8월 6일 6교시 수업내용 (웹 서버 구축) : Spring & MyBatis 트랜잭션(Transaction) - 회원정보 수정
+1.MemberService.java ...(전략)... /** * 회원정보 수정(갱신) *  * @param memberVO 회원정보 * @return 회원정보 수정(갱신) 성공 여부 */ boolean updateMember(MemberVO memberVO); } 2.MemberServiceImpl.java ...(전략)... @Override public boolean updateMember(MemberVO memberVO) { return txTemplate.execute(new TransactionCallback<Boolean>() { @Override public Boolean doInTransaction(TransactionStatus status) { boolean result = false; try { // 기존 회원 존재 여부 if (memberDAO.selectMemberById(memberVO.getId()) == null) { throw new Exception("수정할 회원정보가 존재하지 않습니다."); } result = memberDAO.updateMember(memberVO); } catch (Exception e) { result = false; log.error("MemberService.updateMember 오류 : " + e); status.setRollbackOnly(); } return result; } }); } }
+No.369
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/06
+2024년 8월 6일 4교시 수업내용 (파이썬 기본) : 파이썬 기본문법(교재 4,5장)
+1.ex3.py print(int(3 / 2)) # print(int('a')) # 에러 유발 print(int('2')) print(type(2)) # <class 'int'> n = int(2) n = n + 1 print(n) print(type(n)) #print("---------------") print('-' * 10) print(divmod(5, 2)) print('-' * 10) # print('a' + 1) # can only concatenate str (not "int") to str # print('a' + str(1)) # 모두 문자열이어야 연결(병합) 연산 # print('8진수 : ' + 0o10) # can only concatenate str (not "int") to str print('8진수 : ', 0o10) # 표제와 자동 연결 출력 : 8진수 print('-' * 10) print(4.3 - 2.7) # 부동소숫점 연산의 모순 : 1.5999999999999996
+No.368
+파이썬(python)
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/06
+2024년 8월 6일 3교시 수업내용 (파이썬 기본) : 파이썬 기본문법(교재 4,5장)
+1.ex1.py a = 1 b = 1 # 주석 print(a + b) if a == 1:     print('a는 1이다')     print("a==1") print('a=1') 2.ex2.py a = 2 b = 3 print(a / b) print(a // b) print('py ' * 7) print(3 ** 4) # square(승수, 거듭제곱)
+No.367
+파이썬(python)
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/06
+참고 교재) 파이썬 200제
+https://www.yes24.com/Product/Goods/36836557 ※ 목차 참고
+고정
+No.366
+파이썬(python)
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/05
+2024년 8월 5일 4교시 수업내용 (웹 서버 구축) : Spring & MyBatis 트랜잭션(Transaction)
+1.MemberVO.java : 자바빈 객체 멤버필드간의 비교역할을 하는 hashCode, equals 메소드 오버라이딩 작성시 joindate를 비교 대상에서 제외 ...(전략)... @Override public boolean equals(Object obj) { if (this == obj) return true; if (obj == null) return false; if (getClass() != obj.getClass()) return false; MemberVO other = (MemberVO) obj; return Objects.equals(birthday, other.birthday) && Objects.equals(detailAddress, other.detailAddress) && Objects.equals(email, other.email) && Objects.equals(gender, other.gender) && Objects.equals(id, other.id) && Objects.equals(jibunAddress, other.jibunAddress) && Objects.equals(mobile, other.mobile) && Objects.equals(name, other.name) && Objects.equals(phone, other.phone) && Objects.equals(pw, other.pw) && Objects.equals(roadAddress, other.roadAddress) && Objects.equals(zip, other.zip); } @Override public int hashCode() { return Objects.hash(birthday, detailAddress, email, gender, id, jibunAddress, mobile, name, phone, pw, roadAddress, zip); } ...(후략)...
+No.365
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/05 (수정됨)
+2024년 8월 5일 3교시 수업내용 (웹 서버 구축) : Spring & MyBatis 트랜잭션(Transaction)
+1.InsertRoleTest.java package com.javateam.memberProject.repository; import static org.junit.jupiter.api.Assertions.*; import org.junit.jupiter.api.Test; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.boot.test.context.SpringBootTest; import org.springframework.test.annotation.Rollback; import org.springframework.transaction.annotation.Transactional; import lombok.extern.slf4j.Slf4j; @SpringBootTest @Slf4j class InsertRoleTest { @Autowired MemberDAO memberDAO; // case-1) 존재하는 id(abcd1111)에 대한 관리자 롤(ROLE_ADMIN)을 할당  @Transactional @Rollback(true) @Test void testInsertRole() { assertTrue(memberDAO.insertRole("abcd3333", "ROLE_USER")); } // case-2) 존재하지 않는 id(abcd3333)에 대한 관리자 롤(ROLE_USER)을 할당  // 기댓값 => false @Transactional @Rollback(true) @Test void testInsertRole2() { assertFalse(memberDAO.insertRole("abcd3333", "ROLE_USER")); } }
+No.364
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/05 (수정됨)
+2024년 8월 5일 1~2교시 수업내용 (웹 서버 구축) : Spring & MyBatis 트랜잭션(Transaction)
+1.MemberServiceImpl.java ...(전략)... /* @Override public boolean insertMember(MemberVO memberVO) { return txTemplate.execute(new TransactionCallback<Boolean>() { @Override public Boolean doInTransaction(TransactionStatus status) { boolean result = false; try { result = memberDAO.insertMember(memberVO); } catch (Exception e) { result = false; log.error("MemberService.insertMember 에러 : " + e); status.setRollbackOnly(); } return result; } }); } */ @Override public boolean insertMember(MemberVO memberVO) { return txTemplate.execute(status -> { boolean result = false; try { result = memberDAO.insertMember(memberVO); } catch (Exception e) { result = false; log.error("MemberService.insertMember 에러 : " + e); status.setRollbackOnly(); } return result; } ); } /* @Override public boolean insertMember(MemberVO memberVO) { boolean result = false; TransactionStatus txStatus = dsTxManager.getTransaction(new DefaultTransactionDefinition()); try { memberDAO.insertMember(memberVO); dsTxManager.commit(txStatus); result = true; } catch (Exception e) { dsTxManager.rollback(txStatus); result = false; log.error("MemberService.insertMember 에러 : " + e); // throw e; } // dsTxManager.commit(txStatus); return result; }  */ }
+No.363
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+07:59 (수정됨)
+8/5 ~ 8/9 주간 수업 동영상
+8/5 : https://drive.google.com/drive/folders/19rUZj7xdv8xWDz-jEdam0V3pkYv6rRjv?usp=drive_link 8/6 : https://drive.google.com/drive/folders/1GjUaTnjuVwTxtudm8K7h3yrXk302GSX_?usp=sharing 8/7 : https://drive.google.com/drive/folders/1-vM7CabDrM-1hW3hz0wj_SHiNWOEA_mj?usp=sharing 8/8 : https://drive.google.com/drive/folders/1ESvO2LzkR4JSe2s7a-YjSG8iRqqdHOsi?usp=sharing
+고정
+No.362
+수업 동영상
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/05 (수정됨)
+파이썬 교재 (교안)
+-교재 소개 : https://www.gilbut.co.kr/book/view?bookcode=BN003634&keyword=%ED%8C%8C%EC%9D%B4%EC%8D%AC%20%EC%BD%94%EB%94%A9%20%EB%8F%84%EC%9E%A5&collection=GB_BOOK - 교안(다운로드 링크) : https://drive.google.com/file/d/10j4fhAp5DkN5cH8a3jDpGSu7zmfmhktg/view?usp=sharing - 소스 사이트 : https://github.com/gilbutITbook/006936
+고정
+No.361
+파이썬(python)
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/02
+2024년 8월 2일 : 국영수 총점/평균 문제-12 : JDBC 환경설정 및 성적 테이블 작성
+1.선수작업 1) JDBC 드라이버 등록 (첨부 그림 참조) : lib 폴더 만들어서 JDBC 드라이버 복사 및 configure build path 에서 라이브러리 등록 2) 자바 교재 20장 수업에서 진행한 (7월 26일 분 ?) DbUtil.java (DB 연결/해제 메소드 포함) 복사/등록 2.DbUtil.java package util; import java.sql.Connection; import java.sql.DriverManager; import java.sql.PreparedStatement; import java.sql.ResultSet; import java.sql.SQLException; public class DbUtil { /** * DB 연결 *  * @return DB 연결 객체 */ public static Connection connect() { // DB 연결 객체 Connection conn = null; // DB 연결 요소  // JDBC driver // URL // 계정 ID/PW String driver = "oracle.jdbc.OracleDriver"; String url = "jdbc:oracle:thin:@localhost:1521:xe"; String id = "java"; String pw = "java"; try { Class.forName(driver); // JDBC 드라이버 등록 try { // DB 연결 conn = DriverManager.getConnection(url, id, pw); } catch (SQLException e) { System.err.println("SQL 에러 : " + e); e.printStackTrace(); } } catch (ClassNotFoundException e) { System.err.println("CNFE 에러 : " + e); e.printStackTrace(); } return conn; } /** * DB 자원 반납(close) *  * @param pstmt SQL 처리 객체 * @param rs SQL 결과셋 객체 * @param conn DB 연결 객체 */ public static void close(PreparedStatement pstmt, ResultSet rs, Connection conn) { if (rs != null) { try { rs.close(); } catch (SQLException e) { e.printStackTrace(); } } if (pstmt != null) { try { pstmt.close(); } catch (SQLException e) { e.printStackTrace(); } } if (conn != null) { try { conn.close(); } catch (SQLException e) { e.printStackTrace(); } } } // }
+image
+image
+No.360
+국영수 총점/평균 문제
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/02 (수정됨)
+2024년 8월 2일 7,8교시 수업내용 (웹 서버 구축) : Spring & Transaction
+1.application.properties ...(전략)... # Hikari dataSource spring.datasource.hikari.pool-name=hikariCP spring.datasource.hikari.driver-class-name=net.sf.log4jdbc.sql.jdbcapi.DriverSpy spring.datasource.hikari.jdbc-url=jdbc:log4jdbc:oracle:thin:@localhost:1521:XE spring.datasource.hikari.username=java spring.datasource.hikari.password=java ...(후략)...  2.MyBatisConfig.java package com.javateam.memberProject.config; import javax.sql.DataSource; import org.springframework.boot.context.properties.ConfigurationProperties; import org.springframework.boot.jdbc.DataSourceBuilder; import org.springframework.context.annotation.Bean; import org.springframework.context.annotation.Configuration; import org.springframework.jdbc.datasource.DataSourceTransactionManager; import org.springframework.transaction.PlatformTransactionManager; import com.zaxxer.hikari.HikariDataSource; @Configuration public class MyBatisConfig { @Bean // XML 설정시 <bean> 의존성 정보에 해당  // application.properties  // ==> spring.datasource.* 속성 값(들) @ConfigurationProperties(prefix="spring.datasource.hikari") public DataSource getDataSource() { return  DataSourceBuilder.create() // .type(DataSource.class) .type(HikariDataSource.class) .build(); } @Bean // public DataSourceTransactionManager getTransactionManager() { public PlatformTransactionManager getTransactionManager() { return new DataSourceTransactionManager(this.getDataSource()); } }
+No.359
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/02
+2024년 8월 2일 6교시 수업내용 (웹 서버 구축) : Spring Boot & Transaction
+1.MemberService.java package com.javateam.memberProject.service; import java.util.List; import com.javateam.memberProject.domain.MemberVO; public interface MemberService { /** * 개별 회원정보 조회(검색) *  * @param id 회원 아이디 * @return 회원정보 */ MemberVO selectMemberById(String id); /** * 페이징에 의한(페이지 별로) 회원정보 조회(검색) *  * @param page 페이지 * @param limit 페이지당 회원정보 갯수 * @return 회원정보(들) */ List<MemberVO> selectMembersByPaging(int page, int limit); /** * 전체 회원정보 조회 *  * @return 전체 회원정보 */ List<MemberVO> selectAllMembers(); }
+No.358
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/02 (수정됨)
+2024년 8월 2일 1~4교시 수업내용 (웹 서버 구축) : Spring View Template Engine : Thymeleaf
+1.build.gradle plugins { id 'java' id 'war' id 'org.springframework.boot' version '3.3.2' id 'io.spring.dependency-management' version '1.1.6' } group = 'com.javateam' version = '0.0.1-SNAPSHOT' java { toolchain { languageVersion = JavaLanguageVersion.of(17) } } configurations { compileOnly { extendsFrom annotationProcessor } } repositories { mavenCentral() } dependencies { implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' implementation 'org.springframework.boot:spring-boot-starter-web' compileOnly 'org.projectlombok:lombok' developmentOnly 'org.springframework.boot:spring-boot-devtools' annotationProcessor 'org.projectlombok:lombok' providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat' testImplementation 'org.springframework.boot:spring-boot-starter-test' testRuntimeOnly 'org.junit.platform:junit-platform-launcher' } tasks.named('test') { useJUnitPlatform() }
+No.357
+웹 서버 구축
+댓글 1개
+user profile
+이승호 강사
+관리자
+2024/08/01
+2024년 8월 1일 6교시 수업내용 (웹 서버 구축) : Spring Data JPA 프로그래밍
+1.TestVO.java : VO 간의 멤버 필드들을 한꺼번에 비교하기 위해서는 hashCode, equals 의 오버라이딩 메소드를 사용할 수 있는데 lombok에서는 @Data, @EqualsAndHashCode 애너테이션 등으로 생성할 수 있습니다. 그러나 전체 멤버 필드들이 아닌, 일부 멤버 필드들끼리만 비교하기 위해서는 수동으로 오버라이딩할 것을 권장드립니다. ...(전략)... @Override public boolean equals(Object obj) { if (this == obj) return true; if (obj == null) return false; if (getClass() != obj.getClass()) return false; TestVO other = (TestVO) obj; return Objects.equals(address, other.address) && Objects.equals(age, other.age) && Objects.equals(name, other.name); } @Override public int hashCode() { return Objects.hash(address, age, name); } }
+No.356
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/01
+2024년 8월 1일 5교시 수업내용 (웹 서버 구축) : Spring Data JPA 프로그래밍
+1.TestRepository.java 참고) Query Method 작성법 : https://arahansa.github.io/docs_spring/jpa.html#jpa.query-methods package com.javateam.SpringJPA2.repository; import java.util.List; import org.springframework.data.repository.CrudRepository; // import org.springframework.stereotype.Repository; import com.javateam.SpringJPA2.domain.TestVO; // @Repository public interface TestRepository extends CrudRepository<TestVO, Long> { // 전체 검색 List<TestVO> findAll(); // Query Method 작성법 // https://arahansa.github.io/docs_spring/jpa.html#jpa.query-methods // 이름(name)으로 동등 검색 List<TestVO> findByName(String name); // 이름(name)으로 유사 검색 List<TestVO> findByNameLike(String name); }
+No.355
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/02 (수정됨)
+Spring Boot & Thymeleaf 예시
+1.MemberVO.java package com.javateam.demo4.domain; import java.sql.Date; public class MemberVO { private String id; private String pw; private String name; private Date joindate; public MemberVO() {} public MemberVO(String id, String pw, String name, Date joindate) { this.id = id; this.pw = pw; this.name = name; this.joindate = joindate; } public String getId() { return id; } public void setId(String id) { this.id = id; } public String getPw() { return pw; } public void setPw(String pw) { this.pw = pw; } public String getName() { return name; } public void setName(String name) { this.name = name; } public Date getJoindate() { return joindate; } public void setJoindate(Date joindate) { this.joindate = joindate; } @Override public String toString() { return "MemberVO [id=" + id + ", pw=" + pw + ", name=" + name + ", joindate=" + joindate + "]"; } }
+image
+No.354
+웹 서버 구축
+댓글 0개
+user profile
+이승호 강사
+관리자
+2024/08/01 (수정됨)
+2024년 8월 1일 3교시 수업내용 (웹 서버 구축) : Spring Data JPA 프로그래밍
+1.DAOTest2.java package com.javateam.SpringJPA2.repository; import static org.hamcrest.CoreMatchers.equalTo; import static org.hamcrest.MatcherAssert.assertThat; // import static org.assertj.core.api.Assertions.assertThat; import static org.junit.jupiter.api.Assertions.*; import java.util.ArrayList; import java.util.List; import org.junit.jupiter.api.Test; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.boot.test.context.SpringBootTest; import org.springframework.test.annotation.Rollback; import org.springframework.transaction.annotation.Transactional; import com.javateam.SpringJPA2.domain.TestVO; import lombok.extern.slf4j.Slf4j; @SpringBootTest @Slf4j class DAOTest2 { @Autowired TestRepository testRepo; // case-1) 4명의 레코드를 삽입(샘플 데이터 입력) @Transactional // @Rollback(false) @Rollback(true) @Test void testInsert() { TestVO testVO; List<TestVO> list = new ArrayList<>(); testVO = TestVO.builder()                .name("오상욱")                .address("대전")                .age(27)                .build(); list.add(testVO); testVO = TestVO.builder()                .name("구본길")                .address("서울")                .age(35)                .build(); list.add(testVO); testVO = TestVO.builder()                .name("박상원")                .address("대전")                .age(23)                .build(); list.add(testVO); testVO = TestVO.builder()                .name("도경동")                .address("문경")                .age(24)                .build(); list.add(testVO); List<TestVO> resultList  = (List<TestVO>) testRepo.saveAll(list); assertEquals(4, resultList.size()); } // case-2) 전체 인원 조회 // case-2-1) 조회 결과 존재 여부(Null 여부) 점검 // case-2-2) 조회수(4명) 점검 // case-2-3) 첫/마지막 레코드의 특정값으로 점검 @Test void testFindAll() { List<TestVO> list = testRepo.findAll(); // case-2-1) 조회 결과 존재 여부(Null 여부) 점검 assertNotNull(list); // case-2-2) 조회수(4명) 점검 // assertEquals(4, list.size()); assertThat(4, equalTo(list.size())); // 참고) assertJ Style // assertThat(4).isEqualTo(list.size()); // case-2-3) 첫/마지막 레코드의 특정값으로 점검 // 첫 레코드 : 기댓값(expected) : 오상욱 String actual = list.get(0).getName(); assertThat("오상욱", equalTo(actual)); // 마지막 레코드 : 기댓값(expected) : "동경동" actual = list.get(3).getName(); assertThat("도경동", equalTo(actual)); } }
+No.353
+웹 서버 구축
+댓글 0개
+user profile
+공유하고 싶은 생각이 있나요?
+
+
+
+user profile
+이승호 강사
+관리자
+2024/08/08 18:12
+2024년 8월 8일 8교시 수업내용 (웹 서버 구축) : 회원관리 프로그램 - 회원 가입 MVC 테스트
+1.MemberJoinController.java
+
+package com.javateam.memberProject.controller;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+
+import com.javateam.memberProject.domain.MemberVO;
+import com.javateam.memberProject.service.MemberService;
+
+
+import lombok.extern.slf4j.Slf4j;
+
+
+@Controller
+@RequestMapping("member")
+@Slf4j
+public class MemberJoinController {
+
+
+	@Autowired
+	MemberService memberService;
+	// @RequestMapping(value="/member/joinProc", 
+	//				method=RequestMethod.POST)
+	// @PostMapping("/member/joinProc")
+	@PostMapping("joinProc")
+	public String joinProc(@RequestBody MemberVO memberVO, Model model) {
+		log.info("회원가입 처리 : {}", memberVO);
+		String msg = ""; // 저장 성공/실패 메시지
+		if (memberService.insertMember(memberVO) == true) {
+			msg = "회원가입에 성공하셨습니다.";
+		} else {
+			msg = "회원가입에 실패하였습니다.";
+		}
+		model.addAttribute("msg", msg);
+		return "/member/result"; // result.html (thymeleaf)
+	}
+}
+2.result.html
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+메시지 : [[${msg}]]
+</body>
+</html>
+3. MemberJoinControllerTest.java
+
+package com.javateam.memberProject.controller;
+
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+
+import java.sql.Date;
+
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
+
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.javateam.memberProject.domain.MemberVO;
+import com.javateam.memberProject.service.MemberService;
+
+
+import lombok.extern.slf4j.Slf4j;
+
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@Slf4j
+class MemberJoinControllerTest {
+	
+	// context 객체(wac)
+	@Autowired
+	WebApplicationContext ctx;
+	
+	// 목(mock) 객체
+	@Autowired 
+	MockMvc mockMvc;
+	
+	// 서비스 객체 ex) @AfterEach : 회원정보 삭제
+	@Autowired
+	MemberService memberService;
+	
+	// VO
+	MemberVO memberVO;
+
+
+	// 목(mock) 객체 생성, 회원정보 준비
+	@BeforeEach
+	void setUp() throws Exception {
+		
+		this.mockMvc 
+			= MockMvcBuilders.webAppContextSetup(ctx).build();
+		
+		memberVO = MemberVO.builder()
+				   .id("springjava1111")
+				   .pw("#Abcd1234")
+				   .name("홍길동")
+				   .gender("m")
+				   .email("springjava1111@abcd.com")
+				   .mobile("010-8989-7878")
+				   .phone("02-1111-2222")
+				   .zip("08290")
+				   .roadAddress("서울특별시 관악구 신림로 340")
+				   .jibunAddress("서울특별시 관악구 신림동 1422-5 르네상스 복합쇼핑몰")
+				   .detailAddress("6층 MBC 아카데미")
+				   .birthday(Date.valueOf("2000-01-01"))
+				   .build();
+	}
+
+
+	// 후처리 : 테스트시 가입된 회원삭제
+	@AfterEach
+	void tearDown() throws Exception {
+		memberService.deleteMember("springjava1111");
+	}
+
+
+	// case-1) URL/Http 메소드 => 인자(준비된 회원정보) => JSON화(일괄처리) 
+	// => 연결 여부(Http 상태 코드 : 200) 
+	// => 성공 여부(메시징) 점검 => 이동될 html(thymeleaf) 점검
+	@Test
+	void testJoinProc() {
+		
+		ObjectMapper om = new ObjectMapper();
+		String json = "";
+		try {
+			json = om.writeValueAsString(memberVO);
+		} catch (JsonProcessingException e1) {
+			log.error("json 에러 : " + e1);
+			e1.printStackTrace();
+		}
+		
+		try {
+			
+			mockMvc.perform(post("/member/joinProc")
+							.contentType(MediaType.APPLICATION_JSON)
+							.content(json)
+							.accept(MediaType.APPLICATION_JSON))
+						  .andExpect(status().isOk())
+						  .andExpect(model().attribute("msg", "회원가입에 성공하셨습니다."))
+						  .andExpect(view().name("/member/result"));
+			
+		} catch (Exception e) {
+			log.error("MemberJoinController 에러 : " + e);
+			e.printStackTrace();
+		}
+	}
+
+}
+
+memberProject.zip
+247KB
+MemberJoinControllerTest.java
+3.2KB
+MemberJoinController.java
+1.3KB
+result.html
+183Bytes
+No.382
+웹 서버 구축
+생각을 나눠보세요.
+user profile
+박지원
+
+
+이곳에 파일을 끌어 놓으세요!
+
+

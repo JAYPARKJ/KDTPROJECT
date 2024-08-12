@@ -1,0 +1,11 @@
+
+-- 회원 롤(들) 삭제
+DELETE 
+	FROM USER_ROLES
+	WHERE USERNAME = 'abcd1111';
+	
+-- 회원정보 삭제 
+DELETE
+	FROM MEMBER_TBL
+  WHERE ID = 'abcd1111';
+  

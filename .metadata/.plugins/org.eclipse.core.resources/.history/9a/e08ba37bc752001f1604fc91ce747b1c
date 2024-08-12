@@ -1,0 +1,5 @@
+package com.javateam.memberProject.config;
+
+public class MyBatisConfig {
+
+}

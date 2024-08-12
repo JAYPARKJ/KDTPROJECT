@@ -1,0 +1,99 @@
+package com.javateam.memberProject.repository;
+/*
+데이터 접근 객체(DAO : Data Access Object)
+DAO에서는 SQL문을 구현한 XML파일에서의 해당 ID값을 호출하여 데이터 조회하거나 조작한다
+  
+*/
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.sql.Date;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.javateam.memberProject.domain.MemberVO;
+
+import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+@SpringBootTest
+// @Log4j2 //SLf4j는 다 지원함
+@Slf4j
+class InsertMemberDAO {
+
+	@Autowired
+	MemberDAO memberDAO;
+	
+	MemberVO memberVO;
+	
+	// 삽입(생성)할 회원정보 준비
+	@BeforeEach
+	public void setUp() {
+		
+		// howto-1)
+		//memberVO = new MemberVO();
+		//memberVO.setId("abcd1111");
+		//중략
+		
+		// howto-2)
+		// memberVO = new MemberVO("abcd1111", "#Abcd1234", ...)
+		
+		// howto-3)
+		memberVO = MemberVO.builder()
+						   .id("abcd1111")
+						   .pw("#Abcd1234")
+						   .name("홍길동")
+						   .gender("m")
+						   .email("abcd1111@abcd.com")
+						   .mobile("010-1111-3333")
+						   .phone("02-1111-2222")
+						   .zip("08290")
+						   .roadAddress("서울특별시 관악구 신림로 340")
+						   .jibunAddress("서울특별시 관악구 신림동 1422-5 르네상스 복합쇼핑몰")
+						   .detailAddress("6층 MBC 아카데미")
+						   .birthday(Date.valueOf("2000-01-01"))
+						   //.joindate(new Date(System.currentTimeMillis()))
+						   .build();
+	}			
+	
+	
+ 
+ 
+	// case-1 ) 주어진 회원정보 (MemberVO) 테이블에서 레코드 생성 점검
+	// case1-1) 트랜잭션 활용 롤백(rollback) => 실제 테이블 영향(X)
+	// => 테스트 !
+	// case-1-2) 판정 시 assertXXX 정확한 판정(단언) 결과값이 필요!
+	@Transactional
+	@Rollback(true) // rollback은 테스트며 안쓰거나 그러면 커밋된다.true => 취소(rollback), false => 반영(commit)
+	@Test
+	void testInsertMember() {
+    
+			log.info("memberVO : {}", memberVO );
+			// 이후 판정 남
+			//memberDAO.insertMember(memberVO); // true / false로 정리 
+			
+			boolean result = memberDAO.insertMember(memberVO);
+			//assertTrue(result == 1? true : false);
+			//assertEquals(1, result);
+			
+			// int result = memberDAO.insertMember(memberVO);
+			// 동의어(햄크레스트표현)
+			// import static org.hamcrest.CoreMatchers.*;
+			// assertThat(1, equalTo(result));
+			assertTrue(result);
+			
+			 
+			 
+}
+	 
+	
+	//CASE-2) 존재하지 않는 ID(abcd3333)에 대한 관리자 를(ROLE_USER)을 할당 기대값 => false
+	@Transactional
+	
+}

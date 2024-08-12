@@ -1,0 +1,23 @@
+package com.javateam.memberProject.repository;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.transaction.annotation.Transactional;
+
+class InsertRoleTest {
+
+	@Autowired
+	MemberDAO memberDAO;
+	// case-1) id(abcd1111)
+	@Transactional
+	@Rollback(true)
+	@Test
+	void testInesrtRole() {
+		 
+	
+	}
+
+}

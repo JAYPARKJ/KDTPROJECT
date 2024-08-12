@@ -1,0 +1,13 @@
+package com.javateam.memberProject.service;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class DeleteMemberTest {
+
+	@Test
+	void testDeleteMember() {
+	}
+
+}

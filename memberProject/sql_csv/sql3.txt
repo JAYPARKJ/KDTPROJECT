@@ -1,0 +1,22 @@
+
+
+SELECT COUNT(*) 
+	FROM MEMBER_TBL
+  WHERE ${fld} = #{val}
+  
+ SELECT COUNT(*)
+ 	FROM ( SELECT #{fld}
+ 			 FROM MEMBER_TBL
+ 			WHERE ID != #{id})
+  	WHERE ${fld} = #{val}
+  
+ 
+  SELECT COUNT(*)
+    FROM ( SELECT EMAIL
+    		FROM MEMBER_TBL
+    		WHERE ID != #{id})
+   WHERE ${fld} = #{val}
+   
+  // 인자가 2~3개라 파라미터 타입 (자바클래스 VO) 나 HASHMAP
+  
+  
